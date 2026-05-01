@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const clothingItemSchema = new mongoose.Schema({
-  name: {
+const newsItemSchema = new mongoose.Schema({
+  title: {
     type: String,
     minlength: 2,
-    maxlength: 30,
+    // maxlength: 30,
     required: true,
   },
-  weather: {
+  description: {
     type: String,
-    enum: ["hot", "warm", "cold"],
+    minlength: 2,
+    // maxlength: 30,
     required: true,
   },
-  imageUrl: {
+  urlToImage: {
     type: String,
     required: true,
     validate: {
@@ -21,14 +22,25 @@ const clothingItemSchema = new mongoose.Schema({
       message: "You must enter a valid URL",
     },
   },
+  publishedAt: {
+    type: Date,
+  },
+  source: {
+    type: String,
+    minlength: 2,
+    maxlength: 30,
+    required: true,
+  },
+  keyword: {
+    type: String,
+    minlength: 2,
+    // maxlength: 30,
+    required: true,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
     required: true,
-  },
-  likes: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    default: [],
   },
   createdAt: {
     type: Date,
@@ -36,4 +48,4 @@ const clothingItemSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("clothingItem", clothingItemSchema);
+module.exports = mongoose.model("newsItem", newsItemSchema);

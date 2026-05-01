@@ -1,11 +1,11 @@
-const ClothingItem = require("../models/clothingItem");
+const NewsItem = require("../models/newsItem");
 
 const BadRequestError = require("../errors/BadRequestError");
 const ForbiddenError = require("../errors/ForbiddenError");
 const NotFoundError = require("../errors/NotFoundError");
 
-module.exports.getclothingItems = (req, res, next) => {
-  ClothingItem.find({})
+module.exports.getnewsItems = (req, res, next) => {
+  NewsItem.find({})
     .then((items) => res.send({ data: items }))
     .catch((err) => {
       if (err.name === "CastError") {
@@ -16,10 +16,19 @@ module.exports.getclothingItems = (req, res, next) => {
     });
 };
 
-module.exports.createclothingItem = (req, res, next) => {
-  const { name, weather, imageUrl } = req.body;
+module.exports.createnewsItem = (req, res, next) => {
+  const { title, description, urlToImage, publishedAt, source, keyword } =
+    req.body;
   const owner = req.user._id;
-  ClothingItem.create({ name, weather, imageUrl, owner })
+  NewsItem.create({
+    title,
+    description,
+    urlToImage,
+    publishedAt,
+    source,
+    keyword,
+    owner,
+  })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -30,14 +39,14 @@ module.exports.createclothingItem = (req, res, next) => {
     });
 };
 
-module.exports.deleteclothingItem = (req, res, next) => {
-  ClothingItem.findById(req.params.itemId)
+module.exports.deletenewsItem = (req, res, next) => {
+  NewsItem.findById(req.params.itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id.toString()) {
         throw new ForbiddenError("Operation not allowed");
       }
-      return ClothingItem.findByIdAndDelete(req.params.itemId);
+      return NewsItem.findByIdAndDelete(req.params.itemId);
     })
     .then((deletedItem) => {
       res.send({ data: deletedItem });
@@ -54,39 +63,3 @@ module.exports.deleteclothingItem = (req, res, next) => {
       }
     });
 };
-
-module.exports.likeclothingItem = (req, res, next) =>
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
-    .orFail()
-    .then((item) => res.send({ data: item }))
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
-      } else if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("Invalid data"));
-      } else {
-        next(err);
-      }
-    });
-
-module.exports.dislikeclothingItem = (req, res, next) =>
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
-    .orFail()
-    .then((item) => res.send({ data: item }))
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
-      } else if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("Invalid data"));
-      } else {
-        next(err);
-      }
-    });

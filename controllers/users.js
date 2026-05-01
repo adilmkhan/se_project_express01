@@ -8,32 +8,32 @@ const UnauthorizedError = require("../errors/UnauthorizedError");
 const NotFoundError = require("../errors/NotFoundError");
 const ConflictError = require("../errors/ConflictError");
 
-module.exports.updateProfile = (req, res, next) => {
-  const { name, avatar } = req.body;
-  const userId = req.user._id;
+// module.exports.updateProfile = (req, res, next) => {
+//   const { name, avatar } = req.body;
+//   const userId = req.user._id;
 
-  User.findByIdAndUpdate(
-    userId,
-    { name, avatar },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError("user not found");
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
-      } else {
-        next(err);
-      }
-    });
-};
+//   User.findByIdAndUpdate(
+//     userId,
+//     { name, avatar },
+//     {
+//       new: true,
+//       runValidators: true,
+//     },
+//   )
+//     .then((user) => {
+//       if (!user) {
+//         throw new NotFoundError("user not found");
+//       }
+//       return res.send(user);
+//     })
+//     .catch((err) => {
+//       if (err.name === "ValidationError") {
+//         next(new BadRequestError("Invalid data"));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
@@ -51,13 +51,12 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { name, avatar, email, password } = req.body;
+  const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
     .then((hash) =>
       User.create({
         name,
-        avatar,
         email,
         password: hash,
       }),
@@ -66,7 +65,6 @@ module.exports.createUser = (req, res, next) => {
       res.status(201).send({
         _id: user._id,
         name,
-        avatar,
         email,
       }),
     )

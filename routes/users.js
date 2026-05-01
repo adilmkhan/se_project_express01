@@ -7,4 +7,4 @@ module.exports = router;
 
 router.get("/me", getCurrentUser);
 
-router.patch("/me", validateUserUpdate, updateProfile);
+// router.patch("/me", validateUserUpdate, updateProfile);
