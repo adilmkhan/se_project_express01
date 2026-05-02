@@ -5,13 +5,11 @@ const newsItemSchema = new mongoose.Schema({
   title: {
     type: String,
     minlength: 2,
-    // maxlength: 30,
     required: true,
   },
   description: {
     type: String,
     minlength: 2,
-    // maxlength: 30,
     required: true,
   },
   urlToImage: {
@@ -34,7 +32,6 @@ const newsItemSchema = new mongoose.Schema({
   keyword: {
     type: String,
     minlength: 2,
-    // maxlength: 30,
     required: true,
   },
   owner: {
