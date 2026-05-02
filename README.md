@@ -126,7 +126,7 @@ npm run start
 The server runs at:
 
 ```
-http://localhost:3000
+http://localhost:3001
 ```
 
 ---
@@ -136,7 +136,7 @@ http://localhost:3000
 For production deployment the following variables should be stored in a `.env` file:
 
 ```
-PORT=3000
+PORT=3001
 MONGO_URI=<mongodb connection string>
 JWT_SECRET=<secret key>
 ```
@@ -193,13 +193,6 @@ https://api.your-domain.com
 ```
 
 The frontend client communicates with this API to authenticate users and store saved articles.
-
----
-
-## Author
-
-Adil Muhammad Khan  
-Solutions Architect – State of Missouri
 
 ---
 
