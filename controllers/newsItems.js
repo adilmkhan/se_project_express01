@@ -17,7 +17,7 @@ module.exports.getnewsItems = (req, res, next) => {
 };
 
 module.exports.createnewsItem = (req, res, next) => {
-  const { title, description, urlToImage, publishedAt, source, keyword } =
+  const { title, description, urlToImage, publishedAt, source, url, keyword } =
     req.body;
   const owner = req.user._id;
   NewsItem.create({
@@ -26,6 +26,7 @@ module.exports.createnewsItem = (req, res, next) => {
     urlToImage,
     publishedAt,
     source,
+    url,
     keyword,
     owner,
   })

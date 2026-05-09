@@ -29,6 +29,14 @@ const newsItemSchema = new mongoose.Schema({
     maxlength: 30,
     required: true,
   },
+  url: {
+    type: String,
+    required: true,
+    validate: {
+      validator: validator.isURL,
+      message: "You must enter a valid URL",
+    },
+  },
   keyword: {
     type: String,
     minlength: 2,
