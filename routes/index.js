@@ -11,6 +11,8 @@ const {
 
 const { getSummary } = require("../controllers/summary");
 
+const { getScore } = require("../controllers/scores");
+
 const NotFoundError = require("../errors/NotFoundError");
 
 router.post("/signin", validateUserLogin, login);
@@ -20,6 +22,8 @@ router.use("/items", require("./newsItems"));
 router.use("/users", auth, require("./users"));
 //TODO: create summary route
 router.post("/summary", auth, getSummary);
+//TODO: create score route
+router.post("/score", auth, getScore);
 
 router.use((req, res, next) =>
   next(new NotFoundError("Requested resource not found")),
